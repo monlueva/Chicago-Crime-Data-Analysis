@@ -1,0 +1,51 @@
+// GitHub file download//
+curl -u elastic:8lceWTY7kIHbPxHXvlufnVh4 \
+  -H "Content-Type: application/x-ndjson" \
+  -H "Content-Encoding: gzip" \
+  --data-binary "@/c/Users/Monica/tmp/ChicagoCrimes2015.ndjson.gz" \
+  -X POST "https://4646a8dd09ae4a55bcb0565194ec99c9.us-central1.gcp.cloud.es.io:9243/chicagocrimes2015/_bulk?pretty"
+
+curl -u elastic:8lceWTY7kIHbPxHXvlufnVh4 \
+  "https://4646a8dd09ae4a55bcb0565194ec99c9.us-central1.gcp.cloud.es.io:9243/chicagocrimes2015/_mapping?pretty"
+
+
+
+
+import org.apache.spark.ml.feature.RegexTokenizer
+val tokenizer = new RegexTokenizer()
+ .setPattern("\p{L}+").setMinTokenLength(3)
+.setGaps(false)
+ .setInputCol("text")
+ .setOutputCol("words")
+ 
+val tokenized_df=tokenizer.transform(splits(0))
+ 
+vi) Use the below code to remove stop words
+Run them in separate cells for better understanding
+ 
+%sh wget http://ir.dcs.gla.ac.uk/resources/linguistic_utils/stop_words -O /tmp/stopwords
+%fs cp file:/tmp/stopwords dbfs:/tmp/stopwords
+val stopwords = sc.textFile("/tmp/stopwords").collect()
+ 
+import org.apache.spark.ml.feature.StopWordsRemover
+// Set params for StopWordsRemover
+val remover = new StopWordsRemover()
+ .setStopWords(stopwords) // This parameter is optional
+ .setInputCol("words")
+ .setOutputCol("filtered")
+ 
+// Create new DF with Stopwords removed
+val filtered_df = remover.transform(tokenized_df
+
+sqlContext.sql("Select categories001,count(*) as count1 from business_data13 group by categories001 order by count1 desc").show(10)
+
+
+
+// mappings //
+
+Date": {
+      "type": "date",
+      "format": "M/d/yyyy h:mm:ss aM/d/yyyy hh:mm:ss a
+MM/dd/yyyy h:mm:ss aMM/dd/yyyy hh:mm:ss a
+epoch_millis"
+    },
